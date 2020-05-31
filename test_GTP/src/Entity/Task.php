@@ -33,8 +33,8 @@ class Task
     private $Endtime;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Employee::class, inversedBy="tasks")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Employee", inversedBy="tasks")
+     * @ORM\JoinColumn(nullable=true)
      */
     private $Employee;
 

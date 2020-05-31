@@ -25,7 +25,7 @@ class Employee
     private $Name;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="Employee")
+     * @ORM\OneToMany(targetEntity="App\Entity\Task", mappedBy="Employee", orphanRemoval=true)
      */
     private $tasks;
 
