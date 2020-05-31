@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-
+{% if is_granted('ROLE_USER') %}
 <div class="container mt-5">
     <div class="row">
         <div class="col-6">
@@ -10,7 +10,7 @@
             {% else %}
                 <ul>
                     {% for user in users %}
-                        <li><a href="{{path('singleUser', {id: user.id})}}">{{user.nom|capitalize}} {{user.prenom|capitalize}} {{user.tasks|length}}</a></li>
+                        <li>{{user.nom|capitalize}} {{user.prenom|capitalize}} {{user.tasks|length}}</li>
                     {% endfor %}
                 </ul>
             {% endif %}
@@ -21,4 +21,10 @@
         </div>
     </div>
 </div>
+            
+{% else %}
+    <p>Je ne sais pas comment vous êtes venus ici mais il faut etre connecté pour acceder au contenue de la page</p>      
+{% endif %}
+
+
 {% endblock %}

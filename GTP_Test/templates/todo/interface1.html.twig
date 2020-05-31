@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+{% if is_granted('ROLE_USER') %}
+    {% if tasks is empty %}
+    <p>Ajouter des taches</p>
+
+    {% else %}
+        <select name="option">
+            <option value="libelle">Libelle</option>
+            <option value="heure de début">heure de début</option>
+            <option value="heure de fin">heure de fin</option>
+        </select>
+        <ul>
+            {% for task in tasks %}
+            <li>libelle: {{task.libelle}} heure de début: {{task.starttime | date('H:i')}}  heure de fin: {{task.endtime | date('H:i')}} <a class="btn btn-danger" href="{{path('removeTasks', {id:task.id})}}">supprimer la tache</a></li>
+            {% endfor %}
+        </ul>
+        
+
+    {% endif %}
+
+    </div>
+{% else %}
+       <p>Je ne sais pas comment vous êtes venus ici mais il faut etre connecté pour acceder au contenue de la page</p>     
+{% endif %}
+
+
+{% endblock %}

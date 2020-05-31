@@ -17,19 +17,19 @@ class Task
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=100)
+     * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private $Libelle;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="time")
      */
-    private $deadline;
+    private $Starttime;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="time")
      */
-    private $etat;
+    private $Endtime;
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
@@ -42,38 +42,38 @@ class Task
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getLibelle(): ?string
     {
-        return $this->nom;
+        return $this->Libelle;
     }
 
-    public function setNom(string $nom): self
+    public function setLibelle(string $Libelle): self
     {
-        $this->nom = $nom;
+        $this->Libelle = $Libelle;
 
         return $this;
     }
 
-    public function getDeadline(): ?\DateTimeInterface
+    public function getStarttime(): ?\DateTimeInterface
     {
-        return $this->deadline;
+        return $this->Starttime;
     }
 
-    public function setDeadline(\DateTimeInterface $deadline): self
+    public function setStarttime(\DateTimeInterface $Starttime): self
     {
-        $this->deadline = $deadline;
+        $this->Starttime = $Starttime;
 
         return $this;
     }
 
-    public function getEtat(): ?bool
+    public function getEndtime(): ?\DateTimeInterface
     {
-        return $this->etat;
+        return $this->Endtime;
     }
 
-    public function setEtat(bool $etat): self
+    public function setEndtime(\DateTimeInterface $Endtime): self
     {
-        $this->etat = $etat;
+        $this->Endtime = $Endtime;
 
         return $this;
     }

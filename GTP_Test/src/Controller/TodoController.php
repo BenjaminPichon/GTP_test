@@ -14,7 +14,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class TodoController extends AbstractController
 {
     /**
-     * @Route("/", name="index")
+     * @Route("/index", name="index")
      */
     public function index(Request $request, EntityManagerInterface $entityManager)
     {
@@ -34,37 +34,10 @@ class TodoController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->redirectToRoute('index');
+            return $this->redirectToRoute('index');
         }
         return $this->render('todo/index.html.twig', [
            'users' => $userRepository,
-           'formUser' => $form->createView()
-
-        ]);
-    }
-
-    /**
-     * @Route("/singleUser/{id}", name="singleUser")
-     */
-    public function singleUser($id, Request $request, EntityManagerInterface $entityManager){
-
-        $user = $this->getDoctrine()
-        ->getRepository(User::class)
-        ->find($id);
-
-        $form = $this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()){
-
-            $user = $form->getData();
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('index');
-        }
-        return $this->render('todo/singleUser.html.twig', [
-           'user' => $user,
            'formUser' => $form->createView()
 
         ]);
@@ -98,7 +71,7 @@ class TodoController extends AbstractController
             $entityManager->persist($task);
             $entityManager->flush();
 
-            $this->redirectToRoute('tasks');
+            return $this->redirectToRoute('tasks');
         }
 
         return $this->render('todo/tasks.html.twig', [
@@ -109,58 +82,43 @@ class TodoController extends AbstractController
     }
 
     /**
-     * @Route("/task/remove/{id}", name="remove")
+     * @Route("/interface1", name="interface1")
      */
-    public function removeTask($id, EntityManagerInterface $entityManager){
-        $task = $this->getDoctrine()->getRepository(Task::class)->find($id);
-
-        $entityManager->remove($task);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('index');
-    }
-
-        /**
-     * @Route("/task/validation/{id}", name="validation")
-     */
-    public function validateTask($id, EntityManagerInterface $entityManager){
-        $task = $this->getDoctrine()->getRepository(Task::class)->find($id);
-        $task->setEtat(true);
-
-        $entityManager->persist($task);
-        $entityManager->flush();
-
-        return $this->redirectToRoute('index');
-    }
-
-    /**
-     * @Route("/singleTask/{id}", name="singleTask")
-     */
-    public function singleTask($id, Request $request, EntityManagerInterface $entityManager){
-        $task = $this->getDoctrine()->getRepository(Task::class)->find($id);
-
-        $users = $this->getDoctrine()
-        ->getRepository(User::class)
+    public function interface1() {
+        $allTask = $this->getDoctrine()
+        ->getRepository(Task::class)
         ->findAll();
 
-        $form = $this->createForm(TaskType::class, $task);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()){
-
-            $task = $form->getData();
-            $user = $this->getDoctrine()
-                    ->getRepository(User::class)
-                    ->find($request->request->get('userId'));
-            $task->setUserId($user);
-            $entityManager->persist($task);
-            $entityManager->flush();
-
-            $this->redirectToRoute('tasks');
-        }
-        return $this->render('todo/singleTask.html.twig', [
-            'taskForm' => $form->createView(),
-            'users' => $users
-         ]);
+        return $this->render('todo/interface1.html.twig', [
+            'tasks' => $allTask,
+        ]);
     }
+    
+    /**
+     * @Route("/interface2", name="interface2")
+     */
+    public function interface2() {
+        $allTask = $this->getDoctrine()
+        ->getRepository(Task::class)
+        ->findAll();
+
+        return $this->render('todo/interface2.html.twig', [
+            'tasks' => $allTask,
+        ]);
+    }
+
+
+    /**
+     * @Route("/todo/remove/{id}", name="removeTasks")
+     */
+    public function remove($id, EntityManagerInterface $entityManager){
+
+        $task = $this->taskRepository = $this->getDoctrine()
+                        ->getRepository(Task::class)->find($id);
+        $entityManager->remove($task);
+        $entityManager->flush();
+        return $this->redirectToRoute('interface1');
+    }
+
+
 }

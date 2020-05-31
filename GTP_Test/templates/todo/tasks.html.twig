@@ -2,36 +2,35 @@
 
 {% block body %}
 
+{% if is_granted('ROLE_USER') %}
 <div class="container mt-5">
     <div class="row">
-        <div class="col-6">
-            {% if tasks is empty %}
-            <p>Il n'y a aucune tâche à réaliser</p>
-            {% else %}
-                <ul>
-                    {% for task in tasks %}
-                        <li><a href="{{path('singleTask', {id: task.id})}}">{{task.nom}} {{task.deadline | date('d/m/Y H:i:s')}} 
-                            {% if task.etat %}
-                                <p class="text-success">Tâche réalisée</p>
-                            {% else %}
-                                <p class="text-danger">Tâche à faire</p>
-                            {% endif %}
-                        </a></li>
-                    {% endfor %}
-                </ul>
-            {% endif %}
-        </div>
-        <div class="col-6">
+        {% if users is empty%}
+        <p> ajouter d'abord des employé avant de pouvoir leurs mettre des taches </p>
+        {% else %}
+        <div>
             {{form_start(taskForm)}}
             {{form_rest(taskForm)}}
             <select name="userId">
                 {% for user in users %}
-                    <option value="{{user.id}}">{{ user.nom |capitalize}} {{ user.prenom |capitalize}}</option>
+                    <option value="{{user.id}}">{{ user.prenom |capitalize}} {{ user.nom |capitalize}}</option>
                 {% endfor %}
             </select>
-            
+            <br>
+            <button class="btn btn-primary">Ajouter la tache</button>
             {{form_end(taskForm)}}
         </div>
+        {% endif %}
+        
     </div>
+    <br><br>
+    <a href="{{path('interface1')}}" class="btn btn-primary">Allez à la première interface</a>
+    <a href="{{path('interface2')}}" class="btn btn-primary">Allez à la seconde interface</a>
+
 </div>
+{% else %}
+       <p>Je ne sais pas comment vous êtes venus ici mais il faut etre connecté pour acceder au contenue de la page</p>     
+{% endif %}
+
+
 {% endblock %}
